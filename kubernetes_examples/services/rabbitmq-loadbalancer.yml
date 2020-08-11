@@ -1,0 +1,16 @@
+# for external access to rabbitmq's management UI
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-loadbalancer-service
+
+spec:
+  type: LoadBalancer
+  ports:
+    - targetPort: 15672
+      port: 15672
+
+  selector:
+    app: swagger-whats-new
+    tier: backend
+    type: broker

@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-app-configmap
+  labels:
+    app: swagger-whats-new
+
+data:
+  # django settings
+  DJANGO_SETTINGS_MODULE: "config.settings.prod"
+  DJANGO_ALLOWED_HOSTS: "api.swagger-whats-new.com [::1]"
+
+  # db
+  SQL_DATABASE: "swagger_whats_new"
+  SQL_HOST: "db"
+  SQL_PORT: "5432"
+
+  # broker
+  BROKER_HOST: "rabbitmq"
+  BROKER_PORT: "5672"
+
+  # email
+  EMAIL_SENT_FROM: "admin@swagger-whats-new.com"
+
+  # frontend
+  CORS_ORIGIN_WHITELIST: "https://swagger-whats-new.com"
+  CLIENT_SITE_BASE_URL: "https://swagger-whats-new.com"
+
+  # timeouts, expirations and lifetimes
+  REQUESTS_DEFAULT_TIMEOUT: "3" # in seconds
+  COMPANY_INVITATION_TOKEN_EXPIRES_IN: "4320" # in minutes, 3 days
+  PASSWORD_RESET_TOKEN_EXPIRES_IN: "10" # in minutes
+  ACCESS_TOKEN_LIFETIME: "5" # in minutes
+  REFRESH_TOKEN_LIFETIME: "10080" # in minutes, 7 days
+
+  # celery-beat jobs schedule 
+  DELETE_EXPIRED_COMPANY_INVITATIONS_CRON: "120" # every 2 hours
+  PULL_AND_PROCESS_SWAGGER_FILE_CHANGES_CRON: "15" # every 15 minutes
+  REFRESH_REMOTE_VCS_ACCOUNT_ACCESS_TOKEN_CRON: "60" # every hour

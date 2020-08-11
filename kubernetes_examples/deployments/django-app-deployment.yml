@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app-deployment
+  labels:
+    app: swagger-whats-new
+    tier: backend
+    type: django-app
+
+spec:
+  template:
+    metadata:
+      name: django-app-pod
+      labels:
+        app: swagger-whats-new
+        tier: backend
+        type: django-app
+
+    spec:
+      # chown volume directories before launching the main container
+      initContainers:
+        - name: volume-permissions
+          image: busybox
+          command: ["chown"]
+          args: ["-R", "100:101", "/home/app/web/staticfiles", "/home/app/web/mediafiles"]
+          volumeMounts:
+            - mountPath: /home/app/web/staticfiles
+              name: staticfiles-storage
+            - mountPath: /home/app/web/mediafiles
+              name: mediafiles-storage
+
+      containers:
+        - name: django-app-container
+          image: pianoyeg94/swagger_whats_new_backend:v1.0.0 
+          readinessProbe:
+            httpGet:
+              port: 8000
+              path: /healthz
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              port: 8000
+              path: /healthz
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 3
+          ports:
+            - containerPort: 8000
+          # POD_IP will be dynamically added to Django's allowed hosts
+          # to allow liveness and readiness probes from within the cluster
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          envFrom:
+            - configMapRef:
+                name: django-app-configmap
+            - secretRef:
+                name: django-app-sercret
+          volumeMounts:
+            - mountPath: /home/app/web/mediafiles
+              name: mediafiles-storage
+            - mountPath: /home/app/web/staticfiles
+              name: staticfiles-storage
+
+      volumes:
+        - name: mediafiles-storage
+          persistentVolumeClaim:
+            claimName: media-persistent-volume-claim
+        - name: staticfiles-storage
+          persistentVolumeClaim:
+            claimName: static-persistent-volume-claim
+
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: swagger-whats-new
+      tier: backend
+      type: django-app

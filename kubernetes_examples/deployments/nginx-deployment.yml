@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: swagger-whats-new
+    tier: backend
+    type: reverse-proxy
+
+spec:
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: swagger-whats-new
+        tier: backend
+        type: reverse-proxy
+
+    spec:
+      containers:
+        - name: nginx-container
+          image: pianoyeg94/swagger_whats_new_nginx:v1.0.0 
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /healthz/
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /healthz/
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /home/app/web/mediafiles
+              name: mediafiles-storage
+            - mountPath: /home/app/web/staticfiles
+              name: staticfiles-storage
+
+      volumes:
+        - name: mediafiles-storage
+          persistentVolumeClaim:
+            claimName: media-persistent-volume-claim
+        - name: staticfiles-storage
+          persistentVolumeClaim:
+            claimName: static-persistent-volume-claim
+
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: swagger-whats-new
+      tier: backend
+      type: reverse-proxy

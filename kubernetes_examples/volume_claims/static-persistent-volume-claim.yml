@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: static-persistent-volume-claim
+  labels:
+    app: swagger-whats-new
+    name: static-persistent-volume-claim
+
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+
+  resources:
+    requests:
+      # used only by the Browsable API provided by DjangoRestFramework
+      # (for testing purposes in production)
+      storage: 1Gi
+
+  selector:
+    matchLabels:
+      app: swagger-whats-new
+      name: static-persistent-volume

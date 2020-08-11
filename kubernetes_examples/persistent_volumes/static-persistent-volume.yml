@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: static-persistent-volume
+  labels:
+    app: swagger-whats-new
+    name: static-persistent-volume
+
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 10Gi
+  nfs:
+    path: "/"
+    server: nfs-static-service.default.svc.cluster.local

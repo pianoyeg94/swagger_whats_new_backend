@@ -1,0 +1,16 @@
+# Python and Django 
+*.log
+*.pyc
+__pycache__
+mediafiles/
+logs/
+
+# pytest
+.pytest_cache
+
+#PyCharm 
+.idea
+
+# Celery 
+celerybeat.pid
+

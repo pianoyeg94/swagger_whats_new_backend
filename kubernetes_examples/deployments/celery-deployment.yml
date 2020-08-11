@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-deployment
+  labels:
+    app: swagger-whats-new
+    tier: backend
+    type: worker
+
+spec:
+  template:
+    metadata:
+      name: celery-pod
+      labels:
+        app: swagger-whats-new
+        tier: backend
+        type: worker
+
+    spec:
+      containers:
+        - name: celery-container
+          image: pianoyeg94/swagger_whats_new_backend:v1.0.0
+          # Override original entrypoint in the container
+          command: ["/home/app/web/scripts/entrypoint.prod.celery.sh"]
+          envFrom:
+            - configMapRef:
+                name: django-app-configmap
+            - secretRef:
+                name: django-app-sercret
+
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: swagger-whats-new
+      tier: backend
+      type: worker

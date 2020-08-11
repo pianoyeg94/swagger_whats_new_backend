@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+ name: swagger-whats-new-issuer-staging
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: # <<<YOUE EMAIL GOES HERE>>>
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+      - dns01:
+          clouddns:
+            project: # <<<GCP PROJECT ID GOES HERE>>>
+            # This is the secret used to access the service account
+            serviceAccountSecretRef:
+              name: cert-manager-credentials
+              key: gcp-dns-admin.json

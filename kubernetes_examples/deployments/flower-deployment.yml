@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flower-deployment
+  labels:
+    app: swagger-whats-new
+    tier: monitoring
+    type: flower-monitoring
+
+spec:
+  template:
+    metadata:
+      name: flower-pod
+      labels:
+        app: swagger-whats-new
+        tier: monitoring
+        type: flower-monitoring
+
+    spec:
+      containers:
+        - name: flower-container
+          image: mher/flower
+          ports:
+            - containerPort: 8888
+          envFrom:
+            - configMapRef:
+                name: flower-configmap
+            - secretRef:
+                name: flower-secret
+
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: swagger-whats-new
+      tier: monitoring
+      type: flower-monitoring

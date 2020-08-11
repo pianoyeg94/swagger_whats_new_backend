@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+  labels:
+    app: swagger-whats-new
+    tier: backend
+    type: broker
+
+spec:
+  template:
+    metadata:
+      name: rabbitmq-pod
+      labels:
+        app: swagger-whats-new
+        tier: backend
+        type: broker
+
+    spec:
+      containers:
+        - name: rabbitmq-container
+          image: rabbitmq:3-management-alpine
+          ports:
+            - containerPort: 15672
+          envFrom:
+            - secretRef:
+                name: rabbitmq-sercret
+
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: swagger-whats-new
+      tier: backend
+      type: broker

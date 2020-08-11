@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+  labels:
+    app: swagger-whats-new
+    tier: backend
+    type: db
+
+spec:
+  template:
+    metadata:
+      name: postgres-pod
+      labels:
+        app: swagger-whats-new
+        tier: backend
+        type: db
+
+    spec:
+      containers:
+        - name: postgres-container
+          image: postgres:12.0-alpine
+          readinessProbe:
+            exec:
+              command: ["psql", "-U", "swagger_whats_new", "-d", "swagger_whats_new", "-c", "SELECT 1"]
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 2
+          livenessProbe:
+            exec:
+              command: ["psql", "-U", "swagger_whats_new", "-d", "swagger_whats_new", "-c", "SELECT 1"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 2
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: postgres-configmap
+            - secretRef:
+                name: postgres-sercret
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: db-data-storage
+
+      volumes:
+        - name: db-data-storage
+          persistentVolumeClaim:
+            claimName: postgres-persistent-volume-claim
+
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: swagger-whats-new
+      tier: backend
+      type: db

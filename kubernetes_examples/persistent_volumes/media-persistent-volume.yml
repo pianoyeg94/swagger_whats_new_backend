@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-persistent-volume
+  labels:
+    app: swagger-whats-new
+    name: media-persistent-volume
+
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 10Gi
+  nfs:
+    path: "/"
+    server: nfs-media-service.default.svc.cluster.local

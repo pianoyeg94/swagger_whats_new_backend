@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    # static ip created with gcloud compute
+    kubernetes.io/ingress.global-static-ip-name: "swagger-whats-new-static-ip"
+    kubernetes.io/ingress.allow-http: "false"
+
+spec:
+  tls:
+    - hosts:
+        - swagger-whats-new.com
+        - api.swagger-whats-new.com
+        - www.swagger-whats-new.com
+      # "swagger-whats-new-com-tls-stage" for usage with a staging certificate
+      secretName: swagger-whats-new-com-tls-prod
+
+  rules:
+  - host: api.swagger-whats-new.com   
+    http:
+      paths: 
+      - backend:
+          serviceName: nginx-nodeport-service
+          servicePort: 80
+
+  - host: www.swagger-whats-new.com
+    http:
+      paths:
+      - backend:
+          serviceName: angular-nodeport-service
+          servicePort: 80        
+

@@ -1,0 +1,16 @@
+# for external access via psql or any other database management tool
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-loadbalancer-service
+
+spec:
+  type: LoadBalancer
+  ports:
+    - targetPort: 5432
+      port: 5432
+
+  selector:
+    app: swagger-whats-new
+    tier: backend
+    type: db

@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: swagger-whats-new-com-production
+  namespace: default
+spec:
+  secretName: swagger-whats-new-com-tls-prod
+  issuerRef:
+    name: swagger-whats-new-issuer-production
+    kind: ClusterIssuer
+  dnsNames:
+  - swagger-whats-new.com
+  - api.swagger-whats-new.com
+  - www.swagger-whats-new.com

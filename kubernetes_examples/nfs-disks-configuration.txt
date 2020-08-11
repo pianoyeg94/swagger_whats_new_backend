@@ -1,0 +1,7 @@
+1) Create a persistent disk with a capacity of 10GB named "gce-nfs-disk-mediafiles" 
+
+gcloud compute disks create gce-nfs-disk-mediafiles --size 10 --zone <your cluster zone>
+
+2) Create a persistent disk with a capacity of 10GB named "gce-nfs-disk-staticfiles"
+
+gcloud compute disks create gce-nfs-disk-staticfiles --size 10 --zone <your cluster zone>

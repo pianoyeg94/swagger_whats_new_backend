@@ -1,0 +1,124 @@
+{
+  "removals": {
+    "endpoints": [
+      {
+        "where": "paths",
+        "what": [
+          "/pet/{petId}/uploadFile"
+        ]
+      }
+    ],
+    "methods": [
+      {
+        "where": "/pet",
+        "what": [
+          "get"
+        ]
+      }
+    ],
+    "contracts": [
+      {
+        "where": "definitions",
+        "what": [
+          "subCategory"
+        ]
+      }
+    ],
+    "contract_properties": [
+      {
+        "where": {
+          "contract": "Pet",
+          "endpoints": [
+            "post /pet",
+            "put /pet",
+            "get /pet/findByStatus",
+            "get /pet/findByTags",
+            "get /pet/{petId}"
+          ],
+          "nested_in_other_contracts": null
+        },
+        "what": [
+          "subCategory",
+          "owner"
+        ]
+      },
+      {
+        "where": {
+          "contract": "User",
+          "endpoints": [
+            "post /user/createWithArray",
+            "post /user/createWithList",
+            "get /user/{username}",
+            "put /user/{username}",
+            "post /user"
+          ],
+          "nested_in_other_contracts": null
+        },
+        "what": [
+          "address"
+        ]
+      }
+    ]
+  },
+  "additions": {
+    "endpoints": [
+      {
+        "where": "paths",
+        "what": [
+          "/pet/{petId}/uploadImage"
+        ]
+      }
+    ],
+    "methods": [
+      {
+        "where": "/pet/{petId}",
+        "what": [
+          "delete"
+        ]
+      }
+    ],
+    "contracts": [
+      {
+        "where": "definitions",
+        "what": [
+          "Category",
+          "Tag"
+        ]
+      }
+    ],
+    "contract_properties": [
+      {
+        "where": {
+          "contract": "Pet",
+          "endpoints": [
+            "post /pet",
+            "put /pet",
+            "get /pet/findByStatus",
+            "get /pet/findByTags",
+            "get /pet/{petId}"
+          ],
+          "nested_in_other_contracts": null
+        },
+        "what": [
+          "tags"
+        ]
+      },
+      {
+        "where": {
+          "contract": "User",
+          "endpoints": [
+            "post /user/createWithArray",
+            "post /user/createWithList",
+            "get /user/{username}",
+            "put /user/{username}",
+            "post /user"
+          ],
+          "nested_in_other_contracts": null
+        },
+        "what": [
+          "username"
+        ]
+      }
+    ]
+  }
+}

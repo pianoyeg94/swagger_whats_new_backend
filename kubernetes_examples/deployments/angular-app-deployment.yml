@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular-app-deployment
+  labels:
+    app: swagger-whats-new
+    tier: frontend
+    type: angular-app
+
+spec:
+  template:
+    metadata:
+      name: angular-app-pod
+      labels:
+        app: swagger-whats-new
+        tier: frontend
+        type: angular-app  
+
+    spec:
+      containers:
+        - name: angular-app-container
+          image: pianoyeg94/swagger_whats_new_frontend:v1.0.0  
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+          ports:
+            - containerPort: 80   
+
+  replicas: 1    
+
+  selector:
+    matchLabels:
+      app: swagger-whats-new
+      tier: frontend
+      type: angular-app      

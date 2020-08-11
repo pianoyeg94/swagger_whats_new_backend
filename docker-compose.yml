@@ -1,0 +1,66 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    env_file:
+      - ./environments/.env.dev.db
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 15672:15672
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app/:/usr/src/app/
+    ports:
+      - 8000:8000
+    environment:
+      FLUSH_DB: "${FLUSH_DB:-false}"
+    env_file:
+      - ./environments/.env.dev
+    depends_on:
+      - db
+      - rabbitmq
+
+  celery:
+    build: .
+    command: celery worker -A config --loglevel=debug --pool=gevent --concurrency=10
+    volumes:
+      - ./app/:/usr/src/app/
+    env_file:
+      - ./environments/.env.dev
+    depends_on:
+      - db
+      - rabbitmq
+
+  celery-beat:
+    build: .
+    command: celery -A config beat --scheduler=django_celery_beat.schedulers:DatabaseScheduler --loglevel=debug
+    volumes:
+      - ./app/:/usr/src/app/
+    env_file:
+      - ./environments/.env.dev
+    depends_on:
+      - db
+      - rabbitmq
+
+  flower:
+    image: mher/flower
+    ports:
+      - 8888:8888
+    env_file:
+      - ./environments/.env.dev.flower
+    depends_on:
+      - celery
+      - rabbitmq
+
+volumes:
+  postgres_data:

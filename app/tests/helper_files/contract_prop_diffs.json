@@ -1,0 +1,67 @@
+[
+  {
+    "where": {
+      "contract": "Pet",
+      "endpoints": [
+        "post /pet",
+        "put /pet",
+        "get /pet/findByStatus",
+        "get /pet/findByTags",
+        "get /pet/{petId}"
+      ],
+      "nested_in_other_contracts": null
+    },
+    "what": [
+      "tags"
+    ]
+  },
+  {
+    "where": {
+      "contract": "Pet",
+      "endpoints": [
+        "post /pet",
+        "put /pet",
+        "get /pet/findByStatus",
+        "get /pet/findByTags",
+        "get /pet/{petId}"
+      ],
+      "nested_in_other_contracts": null
+    },
+    "what": [
+      "subCategory",
+      "owner"
+    ]
+  },
+  {
+    "where": {
+      "contract": "User",
+      "endpoints": [
+        "post /user/createWithArray",
+        "post /user/createWithList",
+        "get /user/{username}",
+        "put /user/{username}",
+        "post /user"
+      ],
+      "nested_in_other_contracts": null
+    },
+    "what": [
+      "username"
+    ]
+  },
+  {
+    "where": {
+      "contract": "User",
+      "endpoints": [
+        "post /user/createWithArray",
+        "post /user/createWithList",
+        "get /user/{username}",
+        "put /user/{username}",
+        "post /user"
+      ],
+      "nested_in_other_contracts": null
+    },
+    "what": [
+      "address"
+    ]
+  }
+]

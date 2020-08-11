@@ -1,0 +1,16 @@
+# for external access to celery monitoring
+apiVersion: v1
+kind: Service
+metadata:
+  name: flower-loadbalancer-service
+
+spec:
+  type: LoadBalancer
+  ports:
+    - targetPort: 8888
+      port: 8888
+
+  selector:
+    app: swagger-whats-new
+    tier: monitoring
+    type: flower-monitoring

@@ -1,0 +1,40 @@
+1)Elevate your privelages 
+
+kubectl create clusterrolebinding cluster-admin-binding \
+    --clusterrole=cluster-admin \
+    --user=$(gcloud config get-value core/account)
+
+2) Install cert-manager 
+
+# Kubernetes 1.15+
+$ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.yaml
+
+# Kubernetes <1.15
+$ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager-legacy.yaml
+
+3) Store project id in ENV variable
+
+GCP_PROJECT=$(gcloud config get-value project)
+
+4) Create a new service account with the name "dns-admin"
+
+gcloud iam service-accounts create dns-admin \
+    --display-name=dns-admin \
+    --project=${GCP_PROJECT}
+
+5) Create a service account key and store it in a json file
+
+gcloud iam service-accounts keys create ./gcp-dns-admin.json \
+    --iam-account=dns-admin@${GCP_PROJECT}.iam.gserviceaccount.com \
+    --project=${GCP_PROJECT}
+
+6) Add a dns.admin role to the created service account
+
+gcloud projects add-iam-policy-binding ${GCP_PROJECT} \
+    --member=serviceAccount:dns-admin@${GCP_PROJECT}.iam.gserviceaccount.com \
+    --role=roles/dns.admin
+
+7) Create a new secret in the cert-manager's namespace containing the service account key
+
+kubectl create secret generic cert-manager-credentials \
+    --from-file=./gcp-dns-admin.json -n cert-manager

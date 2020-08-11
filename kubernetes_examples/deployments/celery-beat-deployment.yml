@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-beat-deployment
+  labels:
+    app: swagger-whats-new
+    tier: backend
+    type: scheduler
+
+spec:
+  template:
+    metadata:
+      name: celery-beat-pod
+      labels:
+        app: swagger-whats-new
+        tier: backend
+        type: scheduler
+
+    spec:
+      containers:
+        - name: celery-beat-container
+          image: pianoyeg94/swagger_whats_new_backend:v1.0.0
+          # Override original entrypoint in the container
+          command: ["/home/app/web/scripts/entrypoint.prod.celery_beat.sh"]
+          envFrom:
+            - configMapRef:
+                name: django-app-configmap
+            - secretRef:
+                name: django-app-sercret
+
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: swagger-whats-new
+      tier: backend
+      type: scheduler
