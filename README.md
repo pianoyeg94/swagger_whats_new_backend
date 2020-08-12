@@ -86,7 +86,7 @@
    - "Уничтожить" контейнеры - docker-compose down
    - "Уничтожить" контейнеры и привязанные к ним volumes - docker-compose down -v
    - Запустить контейнеры "с нуля" без пересборки - docker-compose up -d
-   - Запустить контейнеры с очисткой всех данных в БД (кроме миграций) - FLUSH=true docker-compose-up -d
+   - Запустить контейнеры с очисткой всех данных в БД (кроме миграций) - FLUSH=true docker-compose up -d
    - Запустить контейнеры "с нуля" с пересборкой - docker-compose up -d --build
    - "Интерактивные" логи - docker-compose logs -f --tail <"number of lines"> <"container name"> (web - django app, db, rabbitmq, celery, celery-beat, flower) 
 9) Запуск юнит тестов - docker-compose exec web pytest
