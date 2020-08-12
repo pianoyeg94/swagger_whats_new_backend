@@ -85,8 +85,8 @@
    - Возобновить работу контейнеров - docker-compose start
    - "Уничтожить" контейнеры - docker-compose down
    - "Уничтожить" контейнеры и привязанные к ним volumes - docker-compose down -v
-   - Запустить контейнеры "с нуля" без пересборки - docker-compose -up -d
-   - Запустить контейнеры с очисткой всех данных в БД (кроме миграций) - FLUSH=true docker-compose -up -d
+   - Запустить контейнеры "с нуля" без пересборки - docker-compose up -d
+   - Запустить контейнеры с очисткой всех данных в БД (кроме миграций) - FLUSH=true docker-compose-up -d
    - Запустить контейнеры "с нуля" с пересборкой - docker-compose up -d --build
    - "Интерактивные" логи - docker-compose logs -f --tail <"number of lines"> <"container name"> (web - django app, db, rabbitmq, celery, celery-beat, flower) 
 9) Запуск юнит тестов - docker-compose exec web pytest
@@ -203,8 +203,8 @@ via integrations with Open API (Swagger) and version control systems
    - Restart containers  - docker-compose start
    - Remove containers - docker-compose down
    - Remove containers and bound volumes - docker-compose down -v
-   - Launch containers "from scratch" without rebuilding - docker-compose -up -d
-   - Launch containers "from scratch" and wipe out database data (excluding migrations) - FLUSH=true docker-compose -up -d
+   - Launch containers "from scratch" without rebuilding - docker-compose up -d
+   - Launch containers "from scratch" and wipe out database data (excluding migrations) - FLUSH=true docker-compose up -d
    - Launch containers "from scratch" with rebuilding - docker-compose up -d --build
    - "Interactive" logs - docker-compose logs -f --tail <"number of lines"> <"container dns name"> (web - django app, db, rabbitmq, celery, celery-beat, flower) 
 9) Command to run unit tests - docker-compose exec web pytest
