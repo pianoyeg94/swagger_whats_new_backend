@@ -1,4 +1,4 @@
-FROM python:3.8.0-alpine
+FROM python:3.9.0-slim
 
 WORKDIR /usr/src/app
 
@@ -6,10 +6,9 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install gcc compiler, make utility, 
-# postgres, argon, celery and image processing dependencies
-RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev \
-        libffi-dev zlib libjpeg-turbo-dev libpng-dev make
+# postgres and image processing dependencies + netcat for entrypoint scripts
+RUN apt-get update \
+    && apt-get install -y gcc make libpq-dev libjpeg-dev libpng-dev netcat
 
 RUN pip install --upgrade pip
 COPY ./requirements.txt /usr/src/app/requirements.txt

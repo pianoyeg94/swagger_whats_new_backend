@@ -8,9 +8,10 @@ django-filter==2.2.0
 django-imagekit==4.0.2
 django-templated-email==2.3.0
 djangorestframework==3.11.0
-djangorestframework-simplejwt==4.4.0
+djangorestframework-simplejwt==4.6.0
 gevent==20.5.0
 gunicorn==20.0.4
+orjson==3.4.4
 Pillow==7.1.1
 psycopg2-binary==2.8.5
 sentry-sdk==0.14.4
