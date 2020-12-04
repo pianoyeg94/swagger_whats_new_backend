@@ -128,6 +128,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': [
         'shared.parsers.ORJSONParser',
         'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'shared.renderers.ORJSONRenderer',
